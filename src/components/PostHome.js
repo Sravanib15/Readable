@@ -75,11 +75,17 @@ class PostHome extends Component {
           <PostForm category/>
         )}
 
-        {selectedPost && (
-          <div>
-            <p>
+        {!newpost && selectedPost && (
+          <div className="post-home-form">
+            <div className="list-post-top">
               <h2>{selectedPost.title}</h2>
-            </p>
+              <button onClick={() => this.updatePostVote(selectedPost,'upVote')} className="post-home-up-vote">
+                Upvote
+              </button>
+              <button onClick={() => this.updatePostVote(selectedPost, 'downVote')} className="post-home-down-vote">
+                Downvote
+              </button>
+            </div>
             <div>
               {selectedPost.body}
             </div>
@@ -87,12 +93,7 @@ class PostHome extends Component {
               Author: {selectedPost.author}
               Score: {selectedPost.voteScore}
             </p>
-            <button onClick={() => this.updatePostVote(selectedPost,'upVote')}>
-              Upvote
-            </button>
-            <button onClick={() => this.updatePostVote(selectedPost, 'downVote')}>
-              Downvote
-            </button>
+
           </div>
         )}
         {!newpost && selectedPost && comments && (
@@ -100,7 +101,7 @@ class PostHome extends Component {
             <div className="list-comment-top">
               <h2>Comments</h2>
               <Link
-                  to={"/"+selectedPost.id+"/CommentForm"}
+                  to={"/"+selectedPost.id+"/newComment"}
                   className='add-comment'
               >
                 Add Comment

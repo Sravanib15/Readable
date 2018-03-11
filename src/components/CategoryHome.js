@@ -34,7 +34,7 @@ class CategoryHome extends Component {
     return (
       <div className="list-posts">
         <div className="list-post-top">
-          <h1>{selectedCategory.toUpperCase()}</h1>
+          <h1>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h1>
           <Link
               to={"/"+selectedCategory+"/newpost"}
               className="add-post"

@@ -15,17 +15,21 @@ class HomePage extends Component {
     const { categories, fetching } = this.props
     return (
       <div>
-        <h1> Categories </h1>
+        <div className="list-comment-top">
+          <h1> Categories </h1>
+        </div>
+        <ol className='category-list'>
         {
           !fetching && categories && categories.length > 0 && categories.map(category => (
-            <ul key={category.name}>
+            <li key={category.name} className="category-list-item">
               <Link to={`/${category.name}/posts`}>
                 <h3> {category.name.charAt(0).toUpperCase() + category.name.slice(1)} </h3>
               </Link>
-            </ul>
+            </li>
             )
           )
         }
+        </ol>
       </div>
     )
   }

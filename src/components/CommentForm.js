@@ -51,16 +51,10 @@ class CommentForm extends Component {
     return (
       <div>
         <Link to={`/${selectedPost}/comments`} className='close-arrow-back'> Close </Link>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <p>
-              Body:
-              <input type='text' placeholder='Body' name='body'/>
-            </p>
-            <p>
-              Author:
-              <input type='text' placeholder='Author' name='author'/>
-            </p>
+        <form onSubmit={this.handleSubmit} className="create-comment-form">
+          <div className='create-comment-details'>
+            Body:  <input type='text' placeholder='Body' name='body'/>
+            Author:  <input type='text' placeholder='Author' name='author'/>
             <button>Add Comment</button>
           </div>
         </form>
