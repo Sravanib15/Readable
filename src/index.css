@@ -1,0 +1,221 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+ul
+	{
+		list-style-type: none;
+		color: white;
+		background-color: Grey;
+		width:100px;
+		padding:15px;
+	}
+li
+	{
+		padding:8px;
+		color: white;
+		background-color: Grey;
+		margin:5px;
+	}
+/*
+ul {
+  margin: 0.75em 0;
+  padding: 0 1em;
+  list-style: none;
+}
+li:before {
+  content: "";
+  border-color: transparent #111;
+  border-style: solid;
+  border-width: 0.35em 0 0.35em 0.45em;
+  display: block;
+  height: 0;
+  width: 0;
+  left: -1em;
+  top: 0.9em;
+  position: relative;
+}*/
+.add-post {
+  display: block;
+  width: 73px;
+  background: white;
+  background-image: url('./icons/person-add.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  font-size: 0;
+  margin-left: 400px;
+}
+
+.post-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.post-list-item {
+  padding: 20px;
+  background: white;
+  display: flex;
+}
+
+@media (min-width: 600px) {
+  .post-list-item {
+    margin: 20px;
+    border: 1px solid #d5d8df;
+    border-radius: 4px;
+  }
+}
+.close-arrow-back {
+  display: block;
+  width: 60px;
+  height: 60px;
+  background-image: url('./icons/arrow-back.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30px;
+  font-size: 0;
+}
+
+.post-remove {
+  padding-left: 20px;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  background-image: url('./icons/cancel.svg');
+  background-size: 100% 100%;
+  border: 0;
+  color: black;
+  font-size: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: none;
+}
+
+.comment-remove {
+  padding-left: 20px;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  background-image: url('./icons/cancel.svg');
+  background-size: 100% 100%;
+  border: 0;
+  color: black;
+  font-size: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: none;
+}
+
+.post-list-item {
+  padding: 20px;
+  background: white;
+  display: flex;
+}
+
+.post-details {
+  padding-left: 20px;
+  border-left: 1px solid #eee;
+
+  flex: 1;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.post-details p {
+  margin: 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-button{
+  padding-left: 20px;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  background-size: 100% 100%;
+  border: 0;
+  color: black;
+  font-size: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: none;
+}
+
+.add-post {
+  display: block;
+  width: 73px;
+  background: white;
+  background-image: url('./icons/add-circular-outlined-button.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  font-size: 0;
+  margin-left: 400px;
+}
+
+.list-posts {
+  padding-top: 60px;
+}
+.list-post-top {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  border-bottom: 1px solid #d5d8df;
+  display: flex;
+  height: 70px;
+}
+.add-comment {
+  display: block;
+  width: 73px;
+  background: white;
+  background-image: url('./icons/comment.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  font-size: 0;
+  margin-left: 400px;
+}
+
+.list-comments {
+  padding-top: 60px;
+}
+.list-comment-top {
+  width: 100%;
+  top: 0;
+  border-bottom: 1px solid #d5d8df;
+  display: flex;
+  height: 70px;
+}
+
+.up-vote{
+  width: 30px;
+  height: 30px;
+  background: white;
+  background-image: url('./icons/like.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  font-size: 0;
+  margin-left: 500px;
+}
+.down-vote {
+  width: 30px;
+  height: 30px;
+  background: white;
+  background-image: url('./icons/thumb-down.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  font-size: 0;
+  margin-left: 10px;
+}
