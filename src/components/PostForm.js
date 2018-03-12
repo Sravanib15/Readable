@@ -8,7 +8,7 @@ class PostForm extends Component {
 
   state = {
     "post": {
-      "timestamp":Date.now()
+    "timestamp":Date.now()
     },
     "selectedCategory": ''
   }

@@ -41,20 +41,20 @@ export default function postReducer(state = initialState, action) {
         ...state,
       }
     case UPDATE_POST: {
-      let selectedPost = action.post;
-      const objIndex = state.posts.findIndex((obj => obj.id === selectedPost.id));
-      state.posts[objIndex].title = selectedPost.title;
-      state.posts[objIndex].body = selectedPost.body;
-      return {
-        ...state,
-        selectedPost
-      }
-    }
-    case UPDATE_POST_VOTE: {
       let updatedPost = action.post;
+      /*const objIndex = state.posts.findIndex((obj => obj.id === selectedPost.id));
+      state.posts[objIndex].title = selectedPost.title;
+      state.posts[objIndex].body = selectedPost.body;*/
       return {
         ...state,
         "selectedPost": updatedPost
+      }
+    }
+    case UPDATE_POST_VOTE: {
+      let scoreupdatedPost = action.post;
+      return {
+        ...state,
+        "selectedPost": scoreupdatedPost
       }
     }
     default:

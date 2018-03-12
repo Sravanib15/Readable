@@ -24,7 +24,24 @@ export function updatePostVote(post, vote) {
   return dispatch =>  {
     api
       .updatePostVote(post.id, {"option": vote})
+      .then(post => dispatch(fetchCategoryPosts(post.category)))
+  }
+}
+
+export function updatePostVoteOnForm(post, vote) {
+  return dispatch =>  {
+    api
+      .updatePostVote(post.id, {"option": vote})
       .then(post => dispatch(updateVote(post)))
+  }
+}
+
+export function modifyPost(post) {
+  console.log(post);
+  return dispatch =>  {
+    api
+      .updatePost(post.id, {"title": post.title, "body": post.body})
+      .then(post => dispatch(updatePost(post)))
   }
 }
 
@@ -43,6 +60,7 @@ export function addPost(post) {
   }
 }
 export function updatePost(post) {
+  console.log(post);
   return {
     type: UPDATE_POST,
     post
@@ -78,14 +96,6 @@ export function createPost(post) {
     api
       .createPost(post)
       .then(post => dispatch(addPost(post)))
-  }
-}
-
-export function modifyPost(post) {
-  return dispatch =>  {
-    api
-      .updatePost(post)
-      .then(post => dispatch(updatePost(post)))
   }
 }
 

@@ -4,7 +4,7 @@ export function updateCommentVote(comment, vote) {
   return dispatch =>  {
     api
       .updateCommentVote(comment.id, {"option": vote})
-      .then(comment => dispatch(updateComment(comment)))
+      .then(comment => dispatch(fetchCommentsByPostId(comment.parentId)))
   }
 }
 
@@ -38,10 +38,11 @@ export function voteComment({ option }) {
 }
 
 export function deleteComment(comment) {
+  console.log(comment);
   return dispatch =>  {
     api
       .deleteComment(comment.id)
-      .then(comment => dispatch(fetchPostComments(comment.parentId)))
+      .then(comment => dispatch(fetchCommentsByPostId(comment.parentId)))
   }
 }
 
@@ -59,7 +60,23 @@ export function getComment({ id }) {
   }
 }
 
+export function fetchCommentsByPostId(postId) {
+  return dispatch =>  {
+    api
+      .getPostComments(postId)
+      .then(comments => dispatch(updateComments(comments)))
+  }
+}
+
+export function updateComments(comments) {
+  return {
+    type: UPDATE_COMMENTS,
+    comments
+  }
+}
+
 export function fetchPostComments(post) {
+
   setSelectedPost(post);
   return dispatch =>  {
     api
@@ -91,3 +108,4 @@ export const GET_COMMENT = 'GET_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS'
 export const SET_SELECTED_POST= 'SET_SELECTED_POST'
+export const UPDATE_COMMENTS= 'UPDATE_COMMENTS';

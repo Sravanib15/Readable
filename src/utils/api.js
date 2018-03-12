@@ -50,15 +50,16 @@ export const createComment = (comment) =>
  })
   .then((res) => res.json())
 
-export const updatePost = (post) =>
-  fetch(`${API_END_PONT}/posts/${post}`, {
+export const updatePost = (postId, updatedJson) =>
+  fetch(`${API_END_PONT}/posts/${postId}`, {
     method: 'PUT',
-    headers,
-    'Content-Type': 'application/json',
-    body: JSON.stringify(post)
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updatedJson)
   })
     .then((res) => res.json())
-    .then(data => data);
 
 export const updatePostVote = (postId, vote) =>
   fetch(`${API_END_PONT}/posts/${postId}`, {

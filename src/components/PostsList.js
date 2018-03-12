@@ -1,29 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
+/*
+import PostListItem from './PostListItem'
+<PostListItem
+  post
+  updatePostVote={props.updatePostVote}
+  onDeletePost={props.onDeletePost}
+/>
+*/
+
 let PostsList = (props) => (
   <ol className="post-list">
     {props.posts && props.posts.length > 0 && props.posts.map(post => (
-        <li key={post.id} className="post-list-item">
-          <div className="post-details">
-              <Link to={`/${post.id}/comments`}>
-                {post.title}
-              </Link>
-              <div>
-                Score: {post.voteScore}
-              </div>
-          </div>
-          <button onClick={() => props.updatePostVote(post,'upVote')} className="up-vote">
-            Upvote
-          </button>
-          <button onClick={() => props.updatePostVote(post, 'downVote')} className="down-vote">
-            Downvote
-          </button>
-          <button onClick={() => props.onDeletePost(post)} className='post-remove'>
-            Remove
-          </button>
-        </li>
-      ))}
+      <li key={post.id} className="post-list-item">
+        <div className="post-details">
+            <Link to={`/${post.id}/comments`}>
+              {post.title}
+            </Link>
+            <div>
+              Score: {post.voteScore}
+            </div>
+        </div>
+        <button onClick={() => props.updatePostVote(post,'upVote')} className="up-vote">
+          Upvote
+        </button>
+        <button onClick={() => props.updatePostVote(post, 'downVote')} className="down-vote">
+          Downvote
+        </button>
+        <button onClick={() => props.onDeletePost(post)} className='post-remove'>
+          Remove
+        </button>
+      </li>
+    ))}
   </ol>
 )
 

@@ -1,4 +1,4 @@
-import { ADD_COMMENT, REMOVE_COMMENT, UPDATE_COMMENT, GET_COMMENT, VOTE_COMMENT, RECEIVE_POST_COMMENTS, SET_SELECTED_POST }  from '../actions/commentsActions'
+import { ADD_COMMENT, REMOVE_COMMENT, UPDATE_COMMENT,UPDATE_COMMENTS, GET_COMMENT, VOTE_COMMENT, RECEIVE_POST_COMMENTS, SET_SELECTED_POST }  from '../actions/commentsActions'
 const initialState = {
   comments: []
 }
@@ -9,6 +9,12 @@ export default function commentsReducer(state = initialState, action) {
       return {
         ...state,
         comments
+      }
+    case UPDATE_COMMENTS:
+      let updatedComments = action.comments;
+      return {
+        ...state,
+        "comments": updatedComments
       }
     case SET_SELECTED_POST:
       const { selectedPost } = action;

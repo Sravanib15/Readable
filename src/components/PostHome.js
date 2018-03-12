@@ -3,7 +3,7 @@ import CommentsList from './CommentsList'
 import PostForm from './PostForm'
 import { connect } from 'react-redux'
 import { fetchPostComments, updateCommentVote, deleteComment } from '../actions/commentsActions'
-import { fetchSelectedPost, updatePostVote } from '../actions/postActions'
+import { fetchSelectedPost, updatePostVoteOnForm, modifyPost } from '../actions/postActions'
 import { withRouter, Link } from 'react-router-dom'
 import serializeForm from 'form-serialize';
 
@@ -11,7 +11,8 @@ class PostHome extends Component {
   state = {
     "post": {},
     "category": '',
-    "selectedPost": ''
+    "selectedPost": '',
+    "editFlag": ''
   }
 
   guid = () => {
@@ -22,16 +23,38 @@ class PostHome extends Component {
     }
     return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
   }
+
   updatePostVote = (post, voteType) => {
-    this.props.dispatch(updatePostVote(post, voteType));
+    this.props.dispatch(updatePostVoteOnForm(post, voteType));
+  }
+
+  editPost = () => {
+    let edit = this.state.editFlag;
+    this.setState({
+      editFlag: !edit
+    })
+    //this.props.dispatch(modifyPost(post));
   }
 
   updateCommentVote = (comment, voteType) => {
+    console.log(comment);
     this.props.dispatch(updateCommentVote(comment, voteType));
   }
 
   onDeleteComment = (comment) => {
     this.props.dispatch(deleteComment(comment));
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { selectedPost } = this.props;
+    const values = serializeForm(e.target, { hash: true });
+    const { title, body } = values;
+    console.log(this.props);
+    selectedPost.title = title;
+    selectedPost.body = body;
+    this.props.dispatch(modifyPost(selectedPost));
+    this.editPost();
   }
 
   componentWillMount() {
@@ -64,7 +87,7 @@ class PostHome extends Component {
 
   render() {
     const { comments, selectedPost} = this.props;
-    const { newpost, category } = this.state;
+    const { newpost, category, editFlag } = this.state;
     console.log(comments);
     console.log("selectedPost: " + JSON.stringify(selectedPost));
     console.log("newpost: " + newpost);
@@ -79,6 +102,9 @@ class PostHome extends Component {
           <div className="post-home-form">
             <div className="list-post-top">
               <h2>{selectedPost.title}</h2>
+              <button onClick={() => this.editPost()} className="post-home-edit">
+                Upvote
+              </button>
               <button onClick={() => this.updatePostVote(selectedPost,'upVote')} className="post-home-up-vote">
                 Upvote
               </button>
@@ -86,20 +112,41 @@ class PostHome extends Component {
                 Downvote
               </button>
             </div>
+            {
+              editFlag ? (
+                <form onSubmit={this.handleSubmit} className="create-post-form">
+                  <div className="create-post-details">
+                    <p>
+                      Title:
+                      <input type='text' placeholder='Title' name='title' defaultValue={selectedPost.title}/>
+                    </p>
+                    <p>
+                      Body:
+                      <input type='text' placeholder='Body' cols="40" rows="5" name='body' defaultValue={selectedPost.body}/>
+                    </p>
+                    <button>Update Post</button>
+                  </div>
+                </form>
+              ) : (
+                <div className="post-form-body">
+                  {selectedPost.body}
+                </div>
+              )
+            }
             <div>
-              {selectedPost.body}
+              <span>
+                Author: {selectedPost.author}
+              </span>
+              <span className="post-form-score">
+                Score: {selectedPost.voteScore}
+              </span>
             </div>
-            <p>
-              Author: {selectedPost.author}
-              Score: {selectedPost.voteScore}
-            </p>
-
           </div>
         )}
         {!newpost && selectedPost && comments && (
           <div className="list-comments">
             <div className="list-comment-top">
-              <h2>Comments</h2>
+              <h2>Comments: {comments.length}</h2>
               <Link
                   to={"/"+selectedPost.id+"/newComment"}
                   className='add-comment'
