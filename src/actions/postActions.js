@@ -1,5 +1,6 @@
 import * as api from '../utils/api'
 import { fetchPostComments } from './commentsActions'
+
 export function fetchSelectedPost(postId) {
   return dispatch => {
     api
@@ -12,7 +13,6 @@ export function fetchSelectedPost(postId) {
 }
 
 export function deletePost(post) {
-  console.log(post);
   return dispatch => {
     api
       .deletePost(post.id)
@@ -37,7 +37,6 @@ export function updatePostVoteOnForm(post, vote) {
 }
 
 export function modifyPost(post) {
-  console.log(post);
   return dispatch =>  {
     api
       .updatePost(post.id, {"title": post.title, "body": post.body})
@@ -46,7 +45,6 @@ export function modifyPost(post) {
 }
 
 export function updateVote(post) {
-  console.log(post);
   return {
     type: UPDATE_POST_VOTE,
     post
@@ -60,7 +58,6 @@ export function addPost(post) {
   }
 }
 export function updatePost(post) {
-  console.log(post);
   return {
     type: UPDATE_POST,
     post
@@ -91,7 +88,6 @@ export function fetchCategoryPosts(category) {
 }
 
 export function createPost(post) {
-  console.log(post);
   return dispatch =>  {
     api
       .createPost(post)
@@ -100,8 +96,6 @@ export function createPost(post) {
 }
 
 export function receiveCategoryPosts(selectedCategory, posts) {
-  console.log(selectedCategory);
-  console.log(posts);
   return {
     type: RECEIVE_CATEGORY_POSTS,
     selectedCategory,

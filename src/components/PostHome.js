@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CommentsList from './CommentsList'
 import PostForm from './PostForm'
 import { connect } from 'react-redux'
-import { fetchPostComments, updateCommentVote, deleteComment } from '../actions/commentsActions'
+import { updateCommentVote, deleteComment } from '../actions/commentsActions'
 import { fetchSelectedPost, updatePostVoteOnForm, modifyPost } from '../actions/postActions'
 import { withRouter, Link } from 'react-router-dom'
 import serializeForm from 'form-serialize';
@@ -33,7 +33,6 @@ class PostHome extends Component {
     this.setState({
       editFlag: !edit
     })
-    //this.props.dispatch(modifyPost(post));
   }
 
   updateCommentVote = (comment, voteType) => {
@@ -172,9 +171,6 @@ class PostHome extends Component {
 function mapStateToProps ({ commentsReducer, postReducer }, props) {
   const { comments } = commentsReducer;
   const { selectedPost } = postReducer;
-  const paramPost = props.match.params.post;
-  //const currentPostArray = posts.filter(post => post.id === paramPost);
-  //const currentPost = currentPostArray && currentPostArray.length > 0 && currentPostArray[0];
   return {
     selectedPost,
     comments

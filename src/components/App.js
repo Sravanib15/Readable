@@ -7,7 +7,6 @@ import { withRouter, Route } from 'react-router-dom'
 
 class App extends Component {
   render() {
-    //<Route path='/:post' component={PostHome}/>
     return (
       <div className='app'>
         <Route exact path='/' component={Homepage}/>

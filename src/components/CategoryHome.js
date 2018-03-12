@@ -29,8 +29,6 @@ class CategoryHome extends Component {
   render() {
     const { posts } = this.props
     const { selectedCategory } = this.state;
-    console.log(posts);
-    console.log(selectedCategory);
     return (
       <div className="list-posts">
         <div className="list-post-top">

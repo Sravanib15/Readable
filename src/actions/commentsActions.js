@@ -9,7 +9,6 @@ export function updateCommentVote(comment, vote) {
 }
 
 export function createComment(comment) {
-  console.log(comment);
   return dispatch =>  {
     api
       .createComment(comment)
@@ -23,6 +22,7 @@ export function addComment(comment) {
     comment
   }
 }
+
 export function updateComment(comment) {
   return {
     type: UPDATE_COMMENT,

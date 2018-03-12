@@ -23,11 +23,9 @@ class CommentForm extends Component {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
     const { body, author} = values;
-    console.log(values);
     let { comment, selectedPost } = this.state;
     comment.body = body;
     comment.author = author;
-    console.log(this.state);
     this.props.dispatch(createComment(comment));
     this.props.history.push(`/${selectedPost}/comments`);
   }

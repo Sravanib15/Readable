@@ -211,7 +211,7 @@ li:before {
   background-position: center;
   background-size: 28px;
   font-size: 0;
-  margin-left: 78%;
+  margin-left: 82%;
 }
 
 .list-comments {
@@ -406,7 +406,7 @@ li:before {
   vertical-align: middle;
   cursor: pointer;
   outline: none;
-  margin-left: 60%;
+  margin-left: 75%;
   margin-right: 10px;
 }
 
@@ -462,7 +462,7 @@ li:before {
 }
 
 .post-form-body {
-  width: 90%;
+  width: 100%;
   padding: 5px 10px;
   margin-bottom: 10px;
   font-size: inherit;

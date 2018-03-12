@@ -7,11 +7,13 @@ class PostListItem extends Component {
   state = {
     listItemPost: {}
   }
+
   componentWillMount() {
     this.setState({
       listItemPost: this.props.post
     })
   }
+  
   render() {
     const { post } = this.props;
     return(

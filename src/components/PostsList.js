@@ -1,15 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-/*
-import PostListItem from './PostListItem'
-<PostListItem
-  post
-  updatePostVote={props.updatePostVote}
-  onDeletePost={props.onDeletePost}
-/>
-*/
-
 let PostsList = (props) => (
   <ol className="post-list">
     {props.posts && props.posts.length > 0 && props.posts.map(post => (
