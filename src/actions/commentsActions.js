@@ -23,6 +23,14 @@ export function addComment(comment) {
   }
 }
 
+export function sortComments(comments, sortBy) {
+  return {
+    type: SORT_COMMENTS,
+    comments,
+    sortBy
+  }
+}
+
 export function updateComment(comment) {
   return {
     type: UPDATE_COMMENT,
@@ -109,3 +117,4 @@ export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS'
 export const SET_SELECTED_POST= 'SET_SELECTED_POST'
 export const UPDATE_COMMENTS= 'UPDATE_COMMENTS';
+export const SORT_COMMENTS= 'SORT_COMMENTS';

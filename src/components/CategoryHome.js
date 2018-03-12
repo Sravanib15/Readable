@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PostsList from './PostsList'
 import { connect } from 'react-redux'
-import { fetchCategoryPosts, updatePostVote, deletePost } from '../actions/postActions'
+import { fetchCategoryPosts, updatePostVote, deletePost, sortPosts } from '../actions/postActions'
 import { withRouter, Link } from 'react-router-dom'
 
 class CategoryHome extends Component {
@@ -15,6 +15,12 @@ class CategoryHome extends Component {
 
   onDeletePost = (post) => {
     this.props.dispatch(deletePost(post));
+  }
+
+  updateSort = (e) => {
+    const { posts } = this.props;
+    const index = e.nativeEvent.target.selectedIndex;
+    this.props.dispatch(sortPosts(posts, e.nativeEvent.target[index].value));
   }
 
   componentWillMount() {
@@ -32,7 +38,12 @@ class CategoryHome extends Component {
     return (
       <div className="list-posts">
         <div className="list-post-top">
+          <Link to="/" className='close-arrow-back'> Close </Link>
           <h1>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h1>
+          <select name="sort-by" className="add-sort" defaultValue="date" onChange={this.updateSort}>
+            <option value="timestamp">Date</option>
+            <option value="voteScore">Score</option>
+          </select>
           <Link
               to={"/"+selectedCategory+"/newpost"}
               className="add-post"
@@ -47,10 +58,12 @@ class CategoryHome extends Component {
 }
 
 function mapStateToProps ({ postReducer }, props) {
-  const { posts } = postReducer;
+  const { posts, sortBy } = postReducer
+  const sortedPosts = [].concat(posts)
+    .sort((a, b) => a[sortBy] < b[sortBy])
   return {
     "selectedCategory": props.match.params.category,
-    posts
+    "posts": sortedPosts
   }
 }
 

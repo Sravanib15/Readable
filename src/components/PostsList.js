@@ -10,6 +10,12 @@ let PostsList = (props) => (
               {post.title}
             </Link>
             <div>
+              {post.body}
+            </div>
+            <div>
+              Author: {post.author}
+            </div>
+            <div>
               Score: {post.voteScore}
             </div>
         </div>

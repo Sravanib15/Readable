@@ -1,6 +1,7 @@
-import { ADD_COMMENT, REMOVE_COMMENT, UPDATE_COMMENT,UPDATE_COMMENTS, GET_COMMENT, VOTE_COMMENT, RECEIVE_POST_COMMENTS, SET_SELECTED_POST }  from '../actions/commentsActions'
+import { ADD_COMMENT, SORT_COMMENTS, REMOVE_COMMENT, UPDATE_COMMENT,UPDATE_COMMENTS, GET_COMMENT, VOTE_COMMENT, RECEIVE_POST_COMMENTS, SET_SELECTED_POST }  from '../actions/commentsActions'
 const initialState = {
-  comments: []
+  comments: [],
+  sortBy: 'timestamp'
 }
 export default function commentsReducer(state = initialState, action) {
   switch(action.type) {
@@ -9,6 +10,14 @@ export default function commentsReducer(state = initialState, action) {
       return {
         ...state,
         comments
+      }
+    case SORT_COMMENTS:
+      const { sortBy } = action;
+      const postComments = action.comments;
+      return {
+        ...state,
+        "comments": postComments,
+        sortBy
       }
     case UPDATE_COMMENTS:
       let updatedComments = action.comments;

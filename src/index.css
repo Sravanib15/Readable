@@ -188,7 +188,7 @@ li:before {
   background-position: center;
   background-size: 28px;
   font-size: 0;
-  margin-left: 85%;
+  margin-left: 5%;
 }
 
 .list-posts {
@@ -211,7 +211,25 @@ li:before {
   background-position: center;
   background-size: 28px;
   font-size: 0;
-  margin-left: 82%;
+  margin-left: 5%;
+}
+
+.comments-header{
+  width:40%
+}
+
+.add-comment-sort {
+  display: block;
+  width: 120px;
+  margin-left: 55%;
+  margin-top: 2%
+}
+
+.add-sort {
+  display: block;
+  width: 120px;
+  margin-left: 65%;
+  margin-top: 2%
 }
 
 .list-comments {
@@ -406,7 +424,7 @@ li:before {
   vertical-align: middle;
   cursor: pointer;
   outline: none;
-  margin-left: 75%;
+  margin-left: 65%;
   margin-right: 10px;
 }
 

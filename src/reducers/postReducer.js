@@ -1,7 +1,8 @@
-import { ADD_POST, REMOVE_POST, UPDATE_POST, GET_POSTS, GET_POST, RECEIVE_CATEGORY_POSTS, SET_SELECTED_CATEGORY, UPDATE_POST_VOTE} from '../actions/postActions';
+import { ADD_POST, SORT_POSTS, REMOVE_POST, UPDATE_POST, GET_POSTS, GET_POST, RECEIVE_CATEGORY_POSTS, SET_SELECTED_CATEGORY, UPDATE_POST_VOTE} from '../actions/postActions';
 
 const initialState = {
-  posts: []
+  posts: [],
+  sortBy: 'timestamp'
 }
 
 export default function postReducer(state = initialState, action) {
@@ -29,6 +30,14 @@ export default function postReducer(state = initialState, action) {
         "selectedPost": post
       }
     }
+    case SORT_POSTS:
+      const { sortBy } = action;
+      const catPosts = action.posts;
+      return {
+        ...state,
+        "posts": catPosts,
+        sortBy
+      }
     case ADD_POST: {
       let { post } = action;
       state.posts.push(post);

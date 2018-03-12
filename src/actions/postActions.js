@@ -51,12 +51,21 @@ export function updateVote(post) {
   }
 }
 
+export function sortPosts(posts, sortBy) {
+  return {
+    type: SORT_POSTS,
+    posts,
+    sortBy
+  }
+}
+
 export function addPost(post) {
   return {
     type: ADD_POST,
     post
   }
 }
+
 export function updatePost(post) {
   return {
     type: UPDATE_POST,
@@ -120,3 +129,4 @@ export const GET_POST= 'GET_POST'
 export const GET_CATEGORY_POSTS= 'GET_CATEGORY_POSTS'
 export const RECEIVE_COMMENTS= 'RECEIVE_COMMENTS'
 export const UPDATE_POST_VOTE= 'UPDATE_POST_VOTE'
+export const SORT_POSTS= 'SORT_POSTS'

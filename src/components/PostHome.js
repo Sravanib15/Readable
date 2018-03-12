@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CommentsList from './CommentsList'
 import PostForm from './PostForm'
 import { connect } from 'react-redux'
-import { updateCommentVote, deleteComment } from '../actions/commentsActions'
+import { updateCommentVote, deleteComment, sortComments } from '../actions/commentsActions'
 import { fetchSelectedPost, updatePostVoteOnForm, modifyPost } from '../actions/postActions'
 import { withRouter, Link } from 'react-router-dom'
 import serializeForm from 'form-serialize';
@@ -44,6 +44,12 @@ class PostHome extends Component {
     this.props.dispatch(deleteComment(comment));
   }
 
+  updateSort = (e) => {
+    const { comments } = this.props;
+    let index = e.nativeEvent.target.selectedIndex;
+    this.props.dispatch(sortComments(comments, e.nativeEvent.target[index].value));
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const { selectedPost } = this.props;
@@ -59,8 +65,6 @@ class PostHome extends Component {
   componentWillMount() {
     if (this.props.match.params.post) {
       const { selectedPost } = this.props;
-      console.log(this.props);
-      console.log(selectedPost);
       this.props.dispatch(fetchSelectedPost(this.props.match.params.post));
       selectedPost && (this.setState({
         "post": selectedPost,
@@ -87,10 +91,6 @@ class PostHome extends Component {
   render() {
     const { comments, selectedPost} = this.props;
     const { newpost, category, editFlag } = this.state;
-    console.log(comments);
-    console.log("selectedPost: " + JSON.stringify(selectedPost));
-    console.log("newpost: " + newpost);
-    console.log("category: " + category);
     return (
       <div>
         {newpost && (
@@ -100,6 +100,7 @@ class PostHome extends Component {
         {!newpost && selectedPost && (
           <div className="post-home-form">
             <div className="list-post-top">
+              <Link to={`/${selectedPost.category}/posts`} className='close-arrow-back'> Close </Link>
               <h2>{selectedPost.title}</h2>
               <button onClick={() => this.editPost()} className="post-home-edit">
                 Upvote
@@ -145,7 +146,11 @@ class PostHome extends Component {
         {!newpost && selectedPost && comments && (
           <div className="list-comments">
             <div className="list-comment-top">
-              <h2>Comments: {comments.length}</h2>
+              <h2 className="comments-header">Comments: {comments.length}</h2>
+              <select name="sort-by" className="add-comment-sort" defaultValue="timestamp" onChange={this.updateSort}>
+                <option value="timestamp">Date</option>
+                <option value="voteScore">Score</option>
+              </select>
               <Link
                   to={"/"+selectedPost.id+"/newComment"}
                   className='add-comment'
@@ -169,11 +174,13 @@ class PostHome extends Component {
 
 
 function mapStateToProps ({ commentsReducer, postReducer }, props) {
-  const { comments } = commentsReducer;
+  const { comments, sortBy } = commentsReducer;
+  const sortedComments = [].concat(comments)
+    .sort((a, b) => a[sortBy] < b[sortBy])
   const { selectedPost } = postReducer;
   return {
     selectedPost,
-    comments
+    "comments": sortedComments
   }
 }
 
