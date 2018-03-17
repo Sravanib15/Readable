@@ -14,6 +14,9 @@ let CommentsList = (props) => (
               Score: {comment.voteScore}
             </p>
           </div>
+          <button onClick={() => props.editComment(comment)} className="post-home-edit">
+            Edit
+          </button>
           <button onClick={() => props.updateCommentVote(comment,'upVote')} className="up-vote">
             Upvote
           </button>

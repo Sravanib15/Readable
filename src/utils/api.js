@@ -14,8 +14,16 @@ export const getCategories = () =>
     .then((res) => res.json())
     .then(data => data.categories);
 
+export const getAllPosts = () =>
+  fetch(`${API_END_PONT}/posts`, { headers })
+    .then((res) => res.json())
+
 export const getPost = (postId) =>
   fetch(`${API_END_PONT}/posts/${postId}`, { headers })
+    .then((res) => res.json())
+
+export const getComment = (commentId) =>
+  fetch(`${API_END_PONT}/comments/${commentId}`, { headers })
     .then((res) => res.json())
 
 export const getCategoryPosts = (category) =>
@@ -52,6 +60,17 @@ export const createComment = (comment) =>
 
 export const updatePost = (postId, updatedJson) =>
   fetch(`${API_END_PONT}/posts/${postId}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updatedJson)
+  })
+    .then((res) => res.json())
+
+export const updateComment = (commentId, updatedJson) =>
+  fetch(`${API_END_PONT}/comments/${commentId}`, {
     method: 'PUT',
     headers: {
       ...headers,

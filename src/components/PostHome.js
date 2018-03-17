@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import CommentsList from './CommentsList'
-import PostForm from './PostForm'
 import { connect } from 'react-redux'
 import { updateCommentVote, deleteComment, sortComments } from '../actions/commentsActions'
-import { fetchSelectedPost, updatePostVoteOnForm, modifyPost } from '../actions/postActions'
+import { fetchSelectedPost, updatePostVoteOnForm, modifyPost, deletePost} from '../actions/postActions'
 import { withRouter, Link } from 'react-router-dom'
 import serializeForm from 'form-serialize';
 
@@ -29,10 +28,23 @@ class PostHome extends Component {
   }
 
   editPost = () => {
+    const { selectedPost } = this.props;
+    /*
     let edit = this.state.editFlag;
     this.setState({
       editFlag: !edit
     })
+    */
+    this.props.history.push(`/post/${selectedPost.id}/edit`);
+  }
+
+  onDeletePost = (post) => {
+    this.props.dispatch(deletePost(post));
+    this.props.history.push(`/`);
+  }
+
+  editComment = (comment) => {
+    this.props.history.push(`/comment/${comment.id}/edit`);
   }
 
   updateCommentVote = (comment, voteType) => {
@@ -61,19 +73,39 @@ class PostHome extends Component {
     this.props.dispatch(modifyPost(selectedPost));
     this.editPost();
   }
+  /*
+  {
+    editFlag ? (
+      <form onSubmit={this.handleSubmit} className="create-post-form">
+        <div className="create-post-details">
+          <p>
+            Title:
+            <input type='text' placeholder='Title' name='title' defaultValue={selectedPost.title}/>
+          </p>
+          <p>
+            Body:
+            <input type='text' placeholder='Body' cols="40" rows="5" name='body' defaultValue={selectedPost.body}/>
+          </p>
+          <button>Update Post</button>
+        </div>
+      </form>
+    ) : (
 
+    )
+  }
+  */
   componentWillMount() {
-    if (this.props.match.params.post) {
+    const category = this.props.match.params.category;
+    const post = this.props.match.params.post;
+    if(post) {
       const { selectedPost } = this.props;
-      this.props.dispatch(fetchSelectedPost(this.props.match.params.post));
+      this.props.dispatch(fetchSelectedPost(post));
       selectedPost && (this.setState({
         "post": selectedPost,
         "category": selectedPost && selectedPost.category,
         "newpost": false
       }))
     } else {
-      const category = this.props.match.params.category;
-      console.log(category);
       this.setState({
         post: {
           "id": this.guid(),
@@ -90,17 +122,23 @@ class PostHome extends Component {
 
   render() {
     const { comments, selectedPost} = this.props;
-    const { newpost, category, editFlag } = this.state;
+    const { newpost } = this.state;
+    console.log(newpost);
+    console.log(this.props);
     return (
       <div>
-        {newpost && (
-          <PostForm category/>
-        )}
+        {
+          !newpost && selectedPost && !selectedPost.category && (
+            <div>
+      				<h2>Page Not Found 404</h2>
+      			</div>
+          )
+        }
 
-        {!newpost && selectedPost && (
+        {!newpost && selectedPost && selectedPost.category && (
           <div className="post-home-form">
             <div className="list-post-top">
-              <Link to={`/${selectedPost.category}/posts`} className='close-arrow-back'> Close </Link>
+              <Link to={`/${selectedPost.category}`} className='close-arrow-back'> Close </Link>
               <h2>{selectedPost.title}</h2>
               <button onClick={() => this.editPost()} className="post-home-edit">
                 Upvote
@@ -111,28 +149,13 @@ class PostHome extends Component {
               <button onClick={() => this.updatePostVote(selectedPost, 'downVote')} className="post-home-down-vote">
                 Downvote
               </button>
+              <button onClick={() => this.onDeletePost(selectedPost)} className='post-remove'>
+                Remove
+              </button>
             </div>
-            {
-              editFlag ? (
-                <form onSubmit={this.handleSubmit} className="create-post-form">
-                  <div className="create-post-details">
-                    <p>
-                      Title:
-                      <input type='text' placeholder='Title' name='title' defaultValue={selectedPost.title}/>
-                    </p>
-                    <p>
-                      Body:
-                      <input type='text' placeholder='Body' cols="40" rows="5" name='body' defaultValue={selectedPost.body}/>
-                    </p>
-                    <button>Update Post</button>
-                  </div>
-                </form>
-              ) : (
-                <div className="post-form-body">
-                  {selectedPost.body}
-                </div>
-              )
-            }
+            <div className="post-form-body">
+              {selectedPost.body}
+            </div>
             <div>
               <span>
                 Author: {selectedPost.author}
@@ -143,7 +166,7 @@ class PostHome extends Component {
             </div>
           </div>
         )}
-        {!newpost && selectedPost && comments && (
+        {!newpost && selectedPost && selectedPost.category && comments && (
           <div className="list-comments">
             <div className="list-comment-top">
               <h2 className="comments-header">Comments: {comments.length}</h2>
@@ -152,7 +175,7 @@ class PostHome extends Component {
                 <option value="voteScore">Score</option>
               </select>
               <Link
-                  to={"/"+selectedPost.id+"/newComment"}
+                  to={"/"+selectedPost.id+"/comment/new"}
                   className='add-comment'
               >
                 Add Comment
@@ -161,6 +184,7 @@ class PostHome extends Component {
             {
               <CommentsList
                 comments={comments}
+                editComment={this.editComment}
                 updateCommentVote={this.updateCommentVote}
                 onDeleteComment={this.onDeleteComment}
               />
@@ -174,6 +198,7 @@ class PostHome extends Component {
 
 
 function mapStateToProps ({ commentsReducer, postReducer }, props) {
+  console.log(postReducer);
   const { comments, sortBy } = commentsReducer;
   const sortedComments = [].concat(comments)
     .sort((a, b) => a[sortBy] < b[sortBy])

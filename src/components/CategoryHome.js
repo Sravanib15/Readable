@@ -6,7 +6,12 @@ import { withRouter, Link } from 'react-router-dom'
 
 class CategoryHome extends Component {
   state = {
-    selectedCategory: ''
+    "selectedCategory": "",
+    "post": ""
+  }
+
+  editPost = (post) => {
+    this.props.history.push(`/post/${post.id}/edit`);
   }
 
   updatePostVote = (post, voteType) => {
@@ -25,8 +30,10 @@ class CategoryHome extends Component {
 
   componentWillMount() {
     const selectedCategory = this.props.match.params.category;
+    const post = this.props.match.params.post;
     this.setState({
-      selectedCategory
+      selectedCategory,
+      post
     })
 
     this.props.dispatch(fetchCategoryPosts(selectedCategory));
@@ -34,24 +41,31 @@ class CategoryHome extends Component {
 
   render() {
     const { posts } = this.props
-    const { selectedCategory } = this.state;
+    const { selectedCategory, post} = this.state;
+    console.log(post);
     return (
       <div className="list-posts">
-        <div className="list-post-top">
-          <Link to="/" className='close-arrow-back'> Close </Link>
-          <h1>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h1>
-          <select name="sort-by" className="add-sort" defaultValue="date" onChange={this.updateSort}>
-            <option value="timestamp">Date</option>
-            <option value="voteScore">Score</option>
-          </select>
-          <Link
-              to={"/"+selectedCategory+"/newpost"}
-              className="add-post"
-          >
-            Add Post
-          </Link>
-        </div>
-        <PostsList posts={posts} updatePostVote={this.updatePostVote} onDeletePost={this.onDeletePost}/>
+      {
+        selectedCategory && !post && (
+          <div>
+            <div className="list-post-top">
+              <Link to="/" className='close-arrow-back'> Close </Link>
+              <h1>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h1>
+              <select name="sort-by" className="add-sort" defaultValue="date" onChange={this.updateSort}>
+                <option value="timestamp">Date</option>
+                <option value="voteScore">Score</option>
+              </select>
+              <Link
+                  to={"/"+selectedCategory+"/post/new"}
+                  className="add-post"
+              >
+                Add Post
+              </Link>
+            </div>
+            <PostsList posts={posts} editPost={this.editPost} updatePostVote={this.updatePostVote} onDeletePost={this.onDeletePost}/>
+          </div>
+        )
+      }
       </div>
     )
   }

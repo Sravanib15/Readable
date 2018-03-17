@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { createComment } from '../actions/commentsActions'
+import { createComment, modifyComment, fetchSelectedComment } from '../actions/commentsActions'
+import { fetchSelectedPost } from '../actions/postActions'
 import serializeForm from 'form-serialize';
 
 class CommentForm extends Component {
   state = {
-    comment: {},
-    "selectedPost": ''
+    "selectedComment": {},
+    "selectedPost": {},
+    "selectedCategory": "",
+    "status":""
   }
 
   guid = () => {
@@ -21,39 +24,82 @@ class CommentForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    console.log(this.props);
+    console.log(this.state);
     const values = serializeForm(e.target, { hash: true });
     const { body, author} = values;
-    let { comment, selectedPost } = this.state;
-    comment.body = body;
-    comment.author = author;
-    this.props.dispatch(createComment(comment));
-    this.props.history.push(`/${selectedPost}/comments`);
+    let { selectedComment, selectedPost, selectedCategory, status } = this.state;
+    selectedComment = selectedComment || this.props.selectedComment;
+    selectedComment.body = body;
+    selectedComment.author = author;
+    if(status === "new")
+      this.props.dispatch(createComment(selectedComment))
+    else {
+      this.props.dispatch(modifyComment(selectedComment));
+    }
+    this.props.history.push(`/${selectedPost.category}/${selectedComment.parentId}`);
   }
 
   componentWillMount() {
-      const selectedPost = this.props.match.params.post;
-      this.setState({
-        comment: {
-          "id": this.guid(),
-          "timestamp": Date.now(),
-          "body": "",
-          "author": "",
-          "parentId": selectedPost
-        },
-        selectedPost
-      })
+      const post = this.props.match.params.post;
+      const urlCommentId = this.props.match.params.comment;
+      this.props.dispatch(fetchSelectedPost(post));
+      if(urlCommentId) {
+        this.props.dispatch(fetchSelectedComment(urlCommentId));
+        const { selectedComment } = this.props
+        if(selectedComment && selectedComment.parentId)
+          this.props.dispatch(fetchSelectedPost(post));
+        const { selectedPost } = this.props;
+        this.setState({
+          selectedComment,
+          selectedPost,
+          "selectedCategory": selectedPost || selectedPost.category,
+          "status": "edit"
+        })
+      } else {
+        const { selectedPost } = this.props;
+        this.setState({
+          "selectedComment": {
+            "id": this.guid(),
+            "timestamp": Date.now(),
+            "body": "",
+            "author": "",
+            "parentId": post
+          },
+          selectedPost,
+          "selectedCategory": selectedPost.category,
+          "status": "new"
+        })
+      }
   }
 
   render() {
-    const { selectedPost } = this.state;
+    const { selectedPost, status } = this.state;
+    let selectedComment = this.state.selectedComment || this.props.selectedComment;
+    console.log(this.state);
+    console.log(selectedComment);
     return (
       <div>
-        <Link to={`/${selectedPost}/comments`} className='close-arrow-back'> Close </Link>
+        <Link to={`/${selectedPost.category}/${selectedPost}`} className='close-arrow-back'> Close </Link>
         <form onSubmit={this.handleSubmit} className="create-comment-form">
           <div className='create-comment-details'>
-            Body:  <input type='text' placeholder='Body' name='body'/>
-            Author:  <input type='text' placeholder='Author' name='author'/>
-            <button>Add Comment</button>
+            {
+              status === "new" && (
+                <div>
+                  Body:  <input type='text' placeholder='Body' name='body'/>
+                  Author:  <input type='text' placeholder='Author' name='author'/>
+                  <button>Add Comment</button>
+                </div>
+              )
+            }
+            {
+              status === "edit" && selectedComment && (
+                <div>
+                  Body:  <input type='text' placeholder='Body' defaultValue={selectedComment.body} name='body'/>
+                  <button>Edit Comment</button>
+                </div>
+              )
+            }
           </div>
         </form>
       </div>
@@ -63,7 +109,8 @@ class CommentForm extends Component {
 
 function mapStateToProps ({ commentsReducer, postReducer }, props) {
   return {
-    "selectedPost": props.match.params.post
+    "selectedPost": postReducer.selectedPost,
+    "selectedComment": commentsReducer.selectedComment
   }
 }
 

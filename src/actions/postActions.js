@@ -20,6 +20,14 @@ export function deletePost(post) {
   }
 }
 
+export function deletePostOnHome(post) {
+  return dispatch => {
+    api
+      .deletePost(post.id)
+      .then(post => dispatch(fetchAllPosts()))
+  }
+}
+
 export function updatePostVote(post, vote) {
   return dispatch =>  {
     api
@@ -33,6 +41,14 @@ export function updatePostVoteOnForm(post, vote) {
     api
       .updatePostVote(post.id, {"option": vote})
       .then(post => dispatch(updateVote(post)))
+  }
+}
+
+export function updatePostVoteOnHome(post, vote) {
+  return dispatch =>  {
+    api
+      .updatePostVote(post.id, {"option": vote})
+      .then(post => dispatch(fetchAllPosts()))
   }
 }
 
@@ -92,7 +108,15 @@ export function fetchCategoryPosts(category) {
   return dispatch =>  {
     api
       .getCategoryPosts(category)
-      .then(posts => dispatch(receiveCategoryPosts(category, posts)))
+      .then(posts => {
+        posts.map(post => {
+          api
+          .getPostComments(post.id)
+          .then(comments => post['commentsCount'] = comments.length)
+          return post;
+        })
+        dispatch(receiveCategoryPosts(category, posts));
+      })
   }
 }
 
@@ -119,6 +143,29 @@ export function setSelectedCategory(selectedCategory) {
   }
 }
 
+export function getAllPosts(posts) {
+  return {
+    type: GET_ALL_POSTS,
+    posts
+  }
+}
+
+export function fetchAllPosts() {
+  return dispatch =>  {
+    api
+      .getAllPosts()
+      .then(posts => {
+        posts.map(post => {
+          api
+          .getPostComments(post.id)
+          .then(comments => post['commentsCount'] = comments.length)
+          return post;
+        })
+        dispatch(getAllPosts(posts));
+      })
+  }
+}
+
 export const SET_SELECTED_CATEGORY = 'SET_SELECTED_CATEGORY'
 export const RECEIVE_CATEGORY_POSTS = 'RECEIVE_CATEGORY_POSTS'
 export const ADD_POST = 'ADD_POST'
@@ -130,3 +177,4 @@ export const GET_CATEGORY_POSTS= 'GET_CATEGORY_POSTS'
 export const RECEIVE_COMMENTS= 'RECEIVE_COMMENTS'
 export const UPDATE_POST_VOTE= 'UPDATE_POST_VOTE'
 export const SORT_POSTS= 'SORT_POSTS'
+export const GET_ALL_POSTS = 'GET_ALL_POSTS'

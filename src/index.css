@@ -242,6 +242,13 @@ li:before {
   display: flex;
   height: 70px;
 }
+.list-top {
+  width: 100%;
+  top: 0;
+  border-bottom: 1px solid #d5d8df;
+  display: flex;
+  height: 70px;
+}
 
 .up-vote {
   padding-left: 20px;

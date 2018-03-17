@@ -1,4 +1,4 @@
-import { ADD_POST, SORT_POSTS, REMOVE_POST, UPDATE_POST, GET_POSTS, GET_POST, RECEIVE_CATEGORY_POSTS, SET_SELECTED_CATEGORY, UPDATE_POST_VOTE} from '../actions/postActions';
+import { ADD_POST, SORT_POSTS, GET_ALL_POSTS, REMOVE_POST, UPDATE_POST, GET_POSTS, GET_POST, RECEIVE_CATEGORY_POSTS, SET_SELECTED_CATEGORY, UPDATE_POST_VOTE} from '../actions/postActions';
 
 const initialState = {
   posts: [],
@@ -7,6 +7,13 @@ const initialState = {
 
 export default function postReducer(state = initialState, action) {
   switch(action.type) {
+    case GET_ALL_POSTS: {
+      let { posts } = action;
+      return {
+        ...state,
+        posts
+      }
+    }
     case RECEIVE_CATEGORY_POSTS:
       let { posts } = action;
       return {

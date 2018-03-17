@@ -6,7 +6,7 @@ let PostsList = (props) => (
     {props.posts && props.posts.length > 0 && props.posts.map(post => (
       <li key={post.id} className="post-list-item">
         <div className="post-details">
-            <Link to={`/${post.id}/comments`}>
+            <Link to={`/${post.category}/${post.id}`}>
               {post.title}
             </Link>
             <div>
@@ -18,7 +18,13 @@ let PostsList = (props) => (
             <div>
               Score: {post.voteScore}
             </div>
+            <div>
+              Comments Count: {post.commentCount}
+            </div>
         </div>
+        <button onClick={() => props.editPost(post)} className="post-home-edit">
+          Edit
+        </button>
         <button onClick={() => props.updatePostVote(post,'upVote')} className="up-vote">
           Upvote
         </button>

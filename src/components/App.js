@@ -3,6 +3,7 @@ import Homepage from './Homepage'
 import CategoryHome from './CategoryHome'
 import PostHome from './PostHome'
 import CommentForm from './CommentForm'
+import PostForm from './PostForm'
 import { withRouter, Route } from 'react-router-dom'
 
 class App extends Component {
@@ -10,10 +11,12 @@ class App extends Component {
     return (
       <div className='app'>
         <Route exact path='/' component={Homepage}/>
-        <Route path='/:category/posts' component={CategoryHome}/>
-        <Route path='/:post/comments' component={PostHome}/>
-        <Route path='/:category/newpost' component={PostHome}/>
-        <Route path='/:post/newcomment' component={CommentForm}/>
+        <Route exact path='/:category' component={CategoryHome}/>
+        <Route exact path='/:category/:post' component={PostHome}/>
+        <Route exact path='/:category/post/new' component={PostForm}/>
+        <Route exact path='/post/:post/edit' component={PostForm}/>
+        <Route exact path='/:post/comment/new' component={CommentForm}/>
+        <Route exact path='/comment/:comment/edit' component={CommentForm}/>
       </div>
     );
   }

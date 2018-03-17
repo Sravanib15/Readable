@@ -8,6 +8,14 @@ export function updateCommentVote(comment, vote) {
   }
 }
 
+export function modifyComment(comment) {
+  return dispatch =>  {
+    api
+      .updateComment(comment.id, {"timestamp": Date.now(), "body": comment.body})
+      .then(comment => dispatch(updateComment(comment)))
+  }
+}
+
 export function createComment(comment) {
   return dispatch =>  {
     api
@@ -61,18 +69,29 @@ export function removeComment(comment) {
   }
 }
 
-export function getComment({ id }) {
-  return {
-    type: GET_COMMENT,
-    id
-  }
-}
-
 export function fetchCommentsByPostId(postId) {
   return dispatch =>  {
     api
       .getPostComments(postId)
       .then(comments => dispatch(updateComments(comments)))
+  }
+}
+
+export function fetchSelectedComment(commentId) {
+  return dispatch =>  {
+    api
+      .getComment(commentId)
+      .then(comment => {
+        dispatch(getComment(comment))
+      }
+    )
+  }
+}
+
+export function getComment(comment) {
+  return {
+    type: GET_COMMENT,
+    comment
   }
 }
 

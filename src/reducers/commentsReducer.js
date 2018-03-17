@@ -46,8 +46,10 @@ export default function commentsReducer(state = initialState, action) {
         comment
       }
     case GET_COMMENT:
+      const selectedComment = action.comment;
       return {
-        ...state
+        ...state,
+        selectedComment
       }
     case VOTE_COMMENT: {
       const { comment } = action;
